@@ -201,7 +201,7 @@
                 <div class="form-group">
                     <label for="experience">Computer experience</label>
 
-                    <select id="experience" name="experience">
+                    <select id="experience" name="experience" required>
                         <option value="">Please select</option>
                         <option value="beginner">Beginner</option>
                         <option value="enthusiast">Computer enthusiast</option>
@@ -263,6 +263,7 @@
                     name="message"
                     rows="6"
                     maxlength="1000"
+                    required
                     aria-describedby="message-note"
                     placeholder="Enter your message here"></textarea>
 
@@ -303,6 +304,28 @@
 
 
 </div>
+
+<script>
+    const form = document.getElementById("contact-form");
+
+    form.addEventListener("submit", function(event) {
+        const interests = document.querySelectorAll(
+            'input[name="interests"]:checked'
+        );
+
+        if (interests.length === 0) {
+            event.preventDefault();
+            alert("Please select at least one area of interest.");
+            return;
+        }
+
+        if (document.getElementById("message").value.trim() === "") {
+            event.preventDefault();
+            alert("Please enter a message.");
+        }
+    });
+</script>
+
 
 </body>
 </html>
