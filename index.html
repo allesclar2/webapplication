@@ -304,6 +304,7 @@
 
 
 </div>
+<!-- https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation -->
 
 <script>
     const form = document.getElementById("contact-form");
@@ -322,9 +323,15 @@
         if (document.getElementById("message").value.trim() === "") {
             event.preventDefault();
             alert("Please enter a message.");
+            return;
         }
+
+        event.preventDefault();
+        alert("Message sent!");
+        form.reset();
     });
 </script>
+
 
 
 </body>
