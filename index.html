@@ -316,18 +316,18 @@
 
         if (interests.length === 0) {
             event.preventDefault();
-            alert("Please select at least one area of interest.");
+            window.alert("Please select at least one area of interest.");
             return;
         }
 
         if (document.getElementById("message").value.trim() === "") {
             event.preventDefault();
-            alert("Please enter a message.");
+            window.alert("Please enter a message.");
             return;
         }
 
         event.preventDefault();
-        alert("Message sent!");
+        window.alert("Message sent!");
         form.reset();
     });
 </script>
