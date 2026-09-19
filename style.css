@@ -283,3 +283,78 @@ footer {
         width: 35%;
     }
 }
+.contact {
+margin-top: 25px;
+}
+
+.contact fieldset {
+margin-bottom: 20px;
+padding: 15px;
+border: 1px solid var(--border);
+}
+
+.contact legend {
+padding: 0 8px;
+color: var(--dark-blue);
+font-weight: bold;
+}
+
+.form-group {
+margin-bottom: 15px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 6px;
+font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+width: 100%;
+padding: 8px;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 1rem;
+border: 1px solid var(--border);
+border-radius: 4px;
+}
+
+.form-group textarea {
+resize: vertical;
+}
+
+.form-note {
+display: block;
+margin-top: 5px;
+color: #666;
+}
+
+.option-group {
+margin: 8px 0;
+}
+
+.button-group {
+display: flex;
+gap: 10px;
+margin-top: 15px;
+}
+
+.button-group button {
+padding: 9px 16px;
+color: #ffffff;
+background: var(--blue);
+border: 0;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.button-group .secondary-button {
+background: #666666;
+}
+
+.form-status {
+margin-top: 15px;
+color: var(--dark-blue);
+font-weight: bold;
+}
