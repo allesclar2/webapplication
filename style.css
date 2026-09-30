@@ -361,29 +361,24 @@ font-weight: bold;
 
 .joke-panel {
     margin-top: 25px;
-    padding: 20px;
-
-    text-align: center;
 }
 
 .joke-text {
-    font-size: 16px;
-    line-height: 1.6;
-    margin: 15px auto 20px;
-    max-width: 600px;
-    color: #333;
+    margin: 0 0 20px;
+    line-height: 1.65;
+    color: var(--text);
 }
 
 .joke-panel button {
-    padding: 8px 18px;
-    border: none;
+    padding: 9px 16px;
+    color: #ffffff;
+    background: var(--blue);
+    border: 0;
     border-radius: 4px;
-    background: #222;
-    color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1rem;
 }
 
 .joke-panel button:hover {
-    background: #555;
+    background: var(--dark-blue);
 }
