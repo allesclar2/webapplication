@@ -347,8 +347,6 @@
     const jokeText = document.getElementById("joke-text");
     const newJokeButton = document.getElementById("new-joke");
 
-    // Words/phrases we don't want displayed
-    // Some of the jokes returned were graphic!
     const bannedWords = [
         "fuck",
         "shit",
@@ -358,70 +356,77 @@
         "dick",
         "pussy",
         "cock",
-        "sex",
         "porn",
         "rape",
-        "nazi",
-        "kill"
+        "nazi"
     ];
 
     function isAppropriate(joke) {
         const text = joke.toLowerCase();
 
-        return !bannedWords.some(word => text.includes(word));
+        return !bannedWords.some(word => {
+            const pattern = new RegExp(`\\b${word}\\b`, "i");
+            return pattern.test(text);
+        });
     }
 
     async function getRandomJoke() {
+
         jokeText.textContent = "Loading joke...";
         newJokeButton.disabled = true;
 
         try {
-            const response = await fetch(
-                "https://api.freeapi.app/api/v1/public/randomjokes"
-            );
 
-            if (!response.ok) {
-                throw new Error(`HTTP error: ${response.status}`);
+            for (let attempt = 0; attempt < 5; attempt++) {
+
+                const response = await fetch(
+                    "https://api.freeapi.app/api/v1/public/randomjokes"
+                );
+
+                if (!response.ok) {
+                    throw new Error("Failed to fetch joke");
+                }
+
+                const result = await response.json();
+
+                const jokes = result.data.data;
+
+                if (!jokes || jokes.length === 0) {
+                    continue;
+                }
+
+                const suitableJokes = jokes.filter(joke =>
+                    isAppropriate(joke.content)
+                );
+
+                if (suitableJokes.length > 0) {
+
+                    const randomIndex =
+                        Math.floor(Math.random() * suitableJokes.length);
+
+                    jokeText.textContent =
+                        suitableJokes[randomIndex].content;
+
+                    return;
+                }
             }
 
-            const result = await response.json();
-
-            const jokes = result.data.data;
-
-            if (!jokes || jokes.length === 0) {
-                throw new Error("No jokes returned");
-            }
-
-  
-            const suitableJokes = jokes.filter(joke =>
-                isAppropriate(joke.content)
-            );
-
-            if (suitableJokes.length === 0) {
-                jokeText.textContent =
-                    "No suitable jokes were found. Please try again.";
-                return;
-            }
-
-            const randomIndex =
-                Math.floor(Math.random() * suitableJokes.length);
-
-            jokeText.textContent =
-                suitableJokes[randomIndex].content;
+            throw new Error("Could not find a suitable joke");
 
         } catch (error) {
+
             console.error("Error fetching joke:", error);
 
             jokeText.textContent =
-                "Sorry, I couldn't load a joke right now.";
+                "Sorry, I couldn't find a suitable joke right now.";
+
         } finally {
+
             newJokeButton.disabled = false;
         }
     }
 
-
     getRandomJoke();
-
 
     newJokeButton.addEventListener("click", getRandomJoke);
 </script>
