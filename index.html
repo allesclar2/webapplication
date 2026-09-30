@@ -347,6 +347,31 @@
     const jokeText = document.getElementById("joke-text");
     const newJokeButton = document.getElementById("new-joke");
 
+    // Words we don't want displayed
+    const bannedWords = [
+        "fuck",
+        "shit",
+        "bitch",
+        "asshole",
+        "bastard",
+        "dick",
+        "pussy",
+        "cock",
+        "porn",
+        "rape",
+        "nazi",
+        "whore"
+    ];
+
+    function isAppropriate(joke) {
+        const text = joke.toLowerCase();
+
+        return !bannedWords.some(word => {
+            const pattern = new RegExp(`\\b${word}\\b`, "i");
+            return pattern.test(text);
+        });
+    }
+
     async function getRandomJoke() {
         jokeText.textContent = "Loading joke...";
         newJokeButton.disabled = true;
@@ -368,11 +393,21 @@
                 throw new Error("No jokes returned");
             }
 
+            const suitableJokes = jokes.filter(joke =>
+                isAppropriate(joke.content)
+            );
+
+            if (suitableJokes.length === 0) {
+                jokeText.textContent =
+                    "No suitable jokes were found. Please try again.";
+                return;
+            }
+
             const randomIndex =
-                Math.floor(Math.random() * jokes.length);
+                Math.floor(Math.random() * suitableJokes.length);
 
             jokeText.textContent =
-                jokes[randomIndex].content;
+                suitableJokes[randomIndex].content;
 
         } catch (error) {
             console.error("Error fetching joke:", error);
