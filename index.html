@@ -347,45 +347,8 @@
     const jokeText = document.getElementById("joke-text");
     const newJokeButton = document.getElementById("new-joke");
 
-    // Words that indicate a computer/technology-related joke
-    const computerWords = [
-        "computer",
-        "pc",
-        "keyboard",
-        "mouse",
-        "internet",
-        "website",
-        "web",
-        "software",
-        "hardware",
-        "program",
-        "programmer",
-        "coding",
-        "code",
-        "programming",
-        "windows",
-        "linux",
-        "server",
-        "wifi",
-        "wi-fi",
-        "screen",
-        "monitor",
-        "printer",
-        "cpu",
-        "memory",
-        "ram",
-        "hard drive",
-        "drive",
-        "browser",
-        "download",
-        "upload",
-        "file",
-        "email",
-        "technology",
-        "tech"
-    ];
-
-    // Words we don't want displayed
+    // Words/phrases we don't want displayed
+    // Some of the jokes returned were graphic!
     const bannedWords = [
         "fuck",
         "shit",
@@ -395,100 +358,73 @@
         "dick",
         "pussy",
         "cock",
+        "sex",
         "porn",
         "rape",
-        "nazi"
+        "nazi",
+        "kill",
+        "norris"
     ];
 
-    function isSuitable(joke) {
-
+    function isAppropriate(joke) {
         const text = joke.toLowerCase();
 
-        // Check for inappropriate language
-        const isClean = !bannedWords.some(word => {
-            const pattern = new RegExp(`\\b${word}\\b`, "i");
-            return pattern.test(text);
-        });
-
-        // Check that the joke is computer-related
-        const isComputerRelated = computerWords.some(word =>
-            text.includes(word)
-        );
-
-        return isClean && isComputerRelated;
+        return !bannedWords.some(word => text.includes(word));
     }
 
     async function getRandomJoke() {
-
         jokeText.textContent = "Loading joke...";
         newJokeButton.disabled = true;
 
         try {
-
-            // Try several times to find a suitable joke
-            for (let attempt = 0; attempt < 30; attempt++) {
-
-                const response = await fetch(
-                    "https://api.freeapi.app/api/v1/public/randomjokes"
-                );
-
-                if (!response.ok) {
-                    throw new Error(
-                        `HTTP error: ${response.status}`
-                    );
-                }
-
-                const result = await response.json();
-
-                const jokes = result.data.data;
-
-                if (!jokes || jokes.length === 0) {
-                    continue;
-                }
-
-                const suitableJokes = jokes.filter(joke =>
-                    isSuitable(joke.content)
-                );
-
-                if (suitableJokes.length > 0) {
-
-                    const randomIndex =
-                        Math.floor(
-                            Math.random() * suitableJokes.length
-                        );
-
-                    jokeText.textContent =
-                        suitableJokes[randomIndex].content;
-
-                    return;
-                }
-            }
-
-            throw new Error(
-                "No suitable computer jokes were found"
+            const response = await fetch(
+                "https://api.freeapi.app/api/v1/public/randomjokes"
             );
 
-        } catch (error) {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
 
+            const result = await response.json();
+
+            const jokes = result.data.data;
+
+            if (!jokes || jokes.length === 0) {
+                throw new Error("No jokes returned");
+            }
+
+  
+            const suitableJokes = jokes.filter(joke =>
+                isAppropriate(joke.content)
+            );
+
+            if (suitableJokes.length === 0) {
+                jokeText.textContent =
+                    "No suitable jokes were found. Please try again.";
+                return;
+            }
+
+            const randomIndex =
+                Math.floor(Math.random() * suitableJokes.length);
+
+            jokeText.textContent =
+                suitableJokes[randomIndex].content;
+
+        } catch (error) {
             console.error("Error fetching joke:", error);
 
             jokeText.textContent =
-                "No suitable computer joke was found. Please try again.";
-
+                "Sorry, I couldn't load a joke right now.";
         } finally {
-
             newJokeButton.disabled = false;
         }
     }
 
-    // Load a joke when the page opens
+
     getRandomJoke();
 
-    // Load another joke when the button is clicked
-    newJokeButton.addEventListener(
-        "click",
-        getRandomJoke
-    );
+
+    newJokeButton.addEventListener("click", getRandomJoke);
 </script>
 
 
