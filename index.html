@@ -347,6 +347,30 @@
     const jokeText = document.getElementById("joke-text");
     const newJokeButton = document.getElementById("new-joke");
 
+    // Words/phrases we don't want displayed
+    // Some of the jokes returned were graphic!
+    const bannedWords = [
+        "fuck",
+        "shit",
+        "bitch",
+        "asshole",
+        "bastard",
+        "dick",
+        "pussy",
+        "cock",
+        "sex",
+        "porn",
+        "rape",
+        "nazi",
+        "kill"
+    ];
+
+    function isAppropriate(joke) {
+        const text = joke.toLowerCase();
+
+        return !bannedWords.some(word => text.includes(word));
+    }
+
     async function getRandomJoke() {
         jokeText.textContent = "Loading joke...";
         newJokeButton.disabled = true;
@@ -365,12 +389,25 @@
             const jokes = result.data.data;
 
             if (!jokes || jokes.length === 0) {
-                throw new Error("No jokes returned from API");
+                throw new Error("No jokes returned");
             }
 
-            const randomIndex = Math.floor(Math.random() * jokes.length);
+  
+            const suitableJokes = jokes.filter(joke =>
+                isAppropriate(joke.content)
+            );
 
-            jokeText.textContent = jokes[randomIndex].content;
+            if (suitableJokes.length === 0) {
+                jokeText.textContent =
+                    "No suitable jokes were found. Please try again.";
+                return;
+            }
+
+            const randomIndex =
+                Math.floor(Math.random() * suitableJokes.length);
+
+            jokeText.textContent =
+                suitableJokes[randomIndex].content;
 
         } catch (error) {
             console.error("Error fetching joke:", error);
@@ -382,10 +419,13 @@
         }
     }
 
+
     getRandomJoke();
+
 
     newJokeButton.addEventListener("click", getRandomJoke);
 </script>
+
 
 
 </body>
