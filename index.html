@@ -98,6 +98,17 @@
                 </table>
             </section>
 
+            <section class="panel joke-panel">
+    <h2 class="panel-title">Random Joke</h2>
+
+    <p id="joke-text" class="joke-text">
+        Loading joke...
+    </p>
+
+    <button type="button" id="new-joke">
+        New Joke
+    </button>
+</section>
         </div>
 
         <aside>
@@ -332,6 +343,41 @@
     });
 </script>
 
+<script>
+    const jokeText = document.getElementById("joke-text");
+    const newJokeButton = document.getElementById("new-joke");
+
+    async function getRandomJoke() {
+        jokeText.textContent = "Loading joke...";
+
+        try {
+            const response = await fetch("YOUR_API_URL_HERE");
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch joke");
+            }
+
+            const result = await response.json();
+
+            const jokes = result.data.data;
+
+            const randomIndex = Math.floor(Math.random() * jokes.length);
+
+            jokeText.textContent = jokes[randomIndex].content;
+
+        } catch (error) {
+            console.error("Error fetching joke:", error);
+            jokeText.textContent =
+                "Sorry, I couldn't load a joke right now.";
+        }
+    }
+
+    // Load a joke when the page opens
+    getRandomJoke();
+
+    // Load another joke when the button is clicked
+    newJokeButton.addEventListener("click", getRandomJoke);
+</script>
 
 
 </body>
