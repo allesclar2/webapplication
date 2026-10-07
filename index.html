@@ -98,7 +98,7 @@
                 </table>
             </section>
 
-            <section class="panel joke-panel">
+<section class="panel joke-panel">
     <h2 class="panel-title">Random Joke</h2>
 
     <p id="joke-text" class="joke-text">
@@ -108,6 +108,14 @@
     <button type="button" id="new-joke">
         New Joke
     </button>
+
+    <button type="button" id="hide-joke">
+        Hide Joke
+    </button>
+
+    <button type="button" id="show-joke">
+    Show Joke
+</button>
 </section>
         </div>
 
@@ -342,6 +350,7 @@
         form.reset();
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
     const jokeText = document.getElementById("joke-text");
@@ -363,6 +372,17 @@
         "whore"
     ];
 
+    $(document).ready(function() {
+
+    $("#hide-joke").click(function() {
+        $("#joke-text").hide();
+    });
+
+    $("#show-joke").click(function() {
+        $("#joke-text").show();
+    });
+
+});
     function isAppropriate(joke) {
         const text = joke.toLowerCase();
 
