@@ -382,3 +382,8 @@ font-weight: bold;
 .joke-panel button:hover {
     background: var(--dark-blue);
 }
+
+.error {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}

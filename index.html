@@ -324,9 +324,47 @@
 
 </div>
 <!-- https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms/Form_validation -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script>
     const form = document.getElementById("contact-form");
+
+    $(document).ready(function() {
+
+    $("#contact-form").submit(function(event) {
+
+        let valid = true;
+
+        $(".form-group input, .form-group textarea, .form-group select")
+            .removeClass("error");
+
+        if ($("#name").val().trim() === "") {
+            $("#name").addClass("error");
+            valid = false;
+        }
+
+        if ($("#email").val().trim() === "") {
+            $("#email").addClass("error");
+            valid = false;
+        }
+
+        if ($("#experience").val() === "") {
+            $("#experience").addClass("error");
+            valid = false;
+        }
+
+        if ($("#message").val().trim() === "") {
+            $("#message").addClass("error");
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault();
+            alert("Please complete all required fields.");
+        }
+    });
+
+});
 
     form.addEventListener("submit", function(event) {
         const interests = document.querySelectorAll(
@@ -350,7 +388,7 @@
         form.reset();
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
 
 <script>
     const jokeText = document.getElementById("joke-text");
